@@ -1,5 +1,7 @@
 # Incident Management System (IMS)
 
+**GitHub Repository:** [Drockz-Tech/Incident_Management_System](https://github.com/Drockz-Tech/Incident_Management_System)
+
 A mission-critical incident management system designed to ingest high volumes of failure signals from a distributed stack, process them asynchronously, and manage failure mediation workflows.
 
 ## Architecture
@@ -74,3 +76,16 @@ python scripts/simulate_traffic.py
 ```bash
 python scripts/simulate_failure.py
 ```
+
+## Non-Functional Enhancements (Security & Performance)
+
+*   **Performance:**
+    *   **Fully Asynchronous Stack:** Utilizing `asyncpg` for PostgreSQL and `motor` for MongoDB ensures non-blocking I/O across all database transactions, dramatically improving throughput.
+    *   **In-Memory Debouncing:** Redis `SETNX` logic with sliding windows effectively drops duplicate error bursts before they hit the persistent databases.
+    *   **Efficient Frontend:** Built with Vite and React, the frontend achieves extremely fast bundle times and highly responsive real-time dashboard updates without unnecessary re-renders.
+
+*   **Security:**
+    *   **DDoS Protection & Rate Limiting:** A Redis-backed Token Bucket rate limiter strictly prevents malicious or runaway microservices from overwhelming the ingestion API.
+    *   **Input Validation:** Strict Pydantic models validate all incoming payloads at the FastAPI boundary, mitigating injection attacks and ensuring data integrity.
+    *   **CORS Policies:** Configured Cross-Origin Resource Sharing (CORS) restrict API access to authorized frontend origins only.
+    *   **UUID Obfuscation:** Using generated UUIDs for tracking Work Items prevents enumeration attacks and ID guessing.
